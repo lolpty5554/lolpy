@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiamCraft Hub — ชุมชนเกม Minecraft สัญชาติไทย ศูนย์รวมเซิร์ฟเวอร์ มอด และเว็บบอร์ด</title>
+    <meta name="description"
+        content="SiamCraft Hub ศูนย์รวมคอมมูนิตี้คนเล่นเกม Minecraft ในประเทศไทย ค้นหาเซิร์ฟเวอร์ไทย โหวตเซิร์ฟเวอร์ ดาวน์โหลดมอด เชดเดอร์ เท็กซ์เจอร์แพ็ก 3D Skin Viewer และแลกเปลี่ยนเทคนิค">
+    <meta name="theme-color" content="#10b981">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SiamCraft Hub — ชุมชนเกม Minecraft สัญชาติไทย">
+    <meta property="og:description" content="ศูนย์กลางชาวไมน์คราฟต์ไทย เซิร์ฟเวอร์ มอด สกิน เทคนิค และการแข่งขัน">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Background Ambient Glow & Particles -->
+    <canvas id="particle-canvas"></canvas>
+    <div class="bg-ambient-layer">
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ==========================================================================
+       Site Header & Navigation
+       ========================================================================== -->
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar">
+                <!-- Brand Logo -->
+                <a href="#" class="brand-logo">
+                    <div class="logo-voxel-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#ffffff"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">SIAMCRAFT</span>
+                        <span class="brand-subtitle">THAI COMMUNITY</span>
+                    </div>
+                </a>
+
+                <!-- Nav Menu -->
+                <ul class="nav-menu">
+                    <li><a href="#servers" class="nav-link active"><span>🌐</span> เซิร์ฟเวอร์</a></li>
+                    <li><a href="#community" class="nav-link"><span>💬</span> ชุมชน</a></li>
+                    <li><a href="#resources" class="nav-link"><span>📦</span> คลังมอด</a></li>
+                    <li><a href="#skin-studio" class="nav-link"><span>🧍</span> 3D สกิน</a></li>
+                    <li><a href="#events" class="nav-link"><span>🏆</span> ทัวร์นาเมนต์</a></li>
+                    <li><a href="#guides" class="nav-link"><span>📚</span> คู่มือ & วิกิ</a></li>
+                </ul>
+
+                <!-- Nav Actions -->
+                <div class="nav-actions">
+                    <div class="realtime-status-pill" id="realtimeStatusBadge" title="Supabase Realtime Sync Status">
+                        <span class="pulse-dot"></span>
+                        <span>Realtime Sync</span>
+                    </div>
+
+                    <button class="search-trigger-btn" id="searchTriggerBtn" title="ค้นหาด่วน (Ctrl + K)">
+                        <span>🔍</span> ค้นหา...
+                        <span class="kbd-shortcut">Ctrl+K</span>
+                    </button>
+
+                    <button class="sound-toggle-btn" id="soundToggleBtn" title="เปิด/ปิด เสียงเอฟเฟกต์ 8-Bit">
+                        <span>🔊</span>
+                    </button>
+
+                    <a href="#community" class="btn-login">
+                        <span>🎮</span> เข้าสู่ระบบ
+                    </a>
+
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+       Hero Section
+       ========================================================================== -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Hero Left Column -->
+                <div class="hero-content">
+                    <div class="hero-badge-wrap">
+                        <span class="pulse-dot"></span>
+                        <span class="hero-badge-text">อัปเดตระบบรองรับ Minecraft 1.21.x Tricky Trials</span>
+                    </div>
+                    <h1 class="hero-title">
+                        ศูนย์รวมสังคม<br />
+                        <span class="gradient-text-emerald">ชาวไมน์คราฟต์ไทย</span>
+                    </h1>
+                    <p class="hero-description">
+                        ค้นพบเซิร์ฟเวอร์ไทยยอดนิยม แลกเปลี่ยนแบบแปลนสิ่งปลูกสร้าง วงจรเรดสโตน
+                        ดาวน์โหลดมอดและเชดเดอร์ฟรี พร้อมร่วมชิงชัยในการแข่งขันทัวร์นาเมนต์ระดับประเทศ!
+                    </p>
+                    <div class="hero-cta-group">
+                        <a href="#servers" class="btn-primary-voxel">
+                            <span>⚔️</span> สำรวจเซิร์ฟเวอร์ไทย
+                        </a>
+                        <button class="btn-secondary-glass" id="btnOpenNewPost">
+                            <span>✍️</span> โพสต์พูดคุยในชุมชน
+                        </button>
+                    </div>
+
+                    <!-- Realtime Stats Counter Strip -->
+                    <div class="stats-strip">
+                        <div class="stat-item">
+                            <div class="stat-icon-wrap">🟢</div>
+                            <div>
+                                <div class="stat-number">18,420+</div>
+                                <div class="stat-label">ผู้เล่นออนไลน์สด</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrap">🖥️</div>
+                            <div>
+                                <div class="stat-number">140+</div>
+                                <div class="stat-label">เซิร์ฟเวอร์ไทย</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrap">👥</div>
+                            <div>
+                                <div class="stat-number">98,500+</div>
+                                <div class="stat-label">สมาชิกชุมชน</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrap">📦</div>
+                            <div>
+                                <div class="stat-number">1,250+</div>
+                                <div class="stat-label">มอด & รีซอร์ส</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Column: Featured Server Card -->
+                <div class="hero-featured-card">
+                    <div class="featured-card-header"
+                        style="background-image: url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?auto=format&fit=crop&w=800&q=80');">
+                        <span class="featured-badge">🔥 เซิร์ฟเวอร์แนะนำประจำสัปดาห์</span>
+                        <span class="live-player-tag">
+                            <span class="pulse-dot"></span>
+                            <span>342/500 คน</span>
+                        </span>
+                    </div>
+                    <div class="featured-card-body">
+                        <div class="server-title-row">
+                            <h3 class="server-name">⚔️ SiamCraft MMORPG</h3>
+                            <span class="server-ping">📶 18ms (ไทยแลนด์)</span>
+                        </div>
+                        <p class="server-desc-short">
+                            เซิร์ฟเวอร์ Survival MMORPG สัญชาติไทย เควสต์เนื้อเรื่อง 500+ เควสต์ ตะลุยบอสดันเจี้ยน
+                            และระบบสงครามกิลด์วอร์สุดมันส์!
+                        </p>
+
+                        <!-- One-Click Copy IP Box -->
+                        <div class="copy-ip-box" onclick="copyIP('play.siamcraft.in.th')">
+                            <div class="ip-text-wrap">
+                                <span class="ip-label">SERVER IP ADDRESS (คลิกเพื่อคัดลอก)</span>
+                                <span class="ip-address">play.siamcraft.in.th</span>
+                            </div>
+                            <div class="copy-icon-btn">📋</div>
+                        </div>
+
+                        <div class="featured-actions-row">
+                            <button class="btn-vote-server" onclick="voteServer('siam-mmo')">
+                                <span>⭐ โหวตเซิร์ฟเวอร์ (+Vote)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Server Directory Section
+       ========================================================================== -->
+    <section class="content-section" id="servers">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">SERVER DIRECTORY</span>
+                    <h2 class="section-heading">สารบัญเซิร์ฟเวอร์ไทยยอดนิยม</h2>
+                    <p class="section-subtitle">เลือกเซิร์ฟเวอร์สไตล์ที่คุณชื่นชอบ พร้อมระบบเช็คสถานะออนไลน์สด และคัดลอก
+                        IP ได้ในคลิกเดียว</p>
+                </div>
+            </div>
+
+            <!-- Server Filter Tabs -->
+            <div class="filter-tabs" id="serverFilters">
+                <button class="filter-btn active" data-filter="all">🌐 ทั้งหมด</button>
+                <button class="filter-btn" data-filter="Survival">⚔️ Survival MMO</button>
+                <button class="filter-btn" data-filter="Minigames">🏆 Bedwars & PVP</button>
+                <button class="filter-btn" data-filter="Skyblock">☁️ SkyBlock</button>
+                <button class="filter-btn" data-filter="Towny">🌍 Towny สร้างเมือง</button>
+                <button class="filter-btn" data-filter="Vanilla">🌱 Vanilla แท้</button>
+                <button class="filter-btn" data-filter="Pixelmon">⚡ Pixelmon</button>
+            </div>
+
+            <!-- Server Grid -->
+            <div class="server-grid" id="serverGrid">
+                <!-- Rendered dynamically by app.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Community Forum & Feed Section
+       ========================================================================== -->
+    <section class="content-section" id="community" style="background: rgba(4, 6, 9, 0.6);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">COMMUNITY FORUM</span>
+                    <h2 class="section-heading">กระดานสนทนา & โชว์ผลงาน</h2>
+                    <p class="section-subtitle">พูดคุยแลกเปลี่ยนเทคนิค อวดบ้านในฝัน แจกสูตรวงจรเรดสโตน
+                        และหาเพื่อนร่วมทีม</p>
+                </div>
+                <button class="btn-primary-voxel"
+                    onclick="document.getElementById('newPostModal').classList.add('active')">
+                    <span>✍️</span> ตั้งกระทู้ใหม่
+                </button>
+            </div>
+
+            <!-- Forum Filter Tabs -->
+            <div class="filter-tabs" id="forumFilters">
+                <button class="filter-btn active" data-filter="all">✨ ทั้งหมด</button>
+                <button class="filter-btn" data-filter="Showcase">🏰 ผลงานสร้างสรรค์</button>
+                <button class="filter-btn" data-filter="Redstone">🔴 เทคนิคเรดสโตน</button>
+                <button class="filter-btn" data-filter="LFG">👥 หาเพื่อน / ทีม</button>
+                <button class="filter-btn" data-filter="News">📢 ข่าวสารเกม</button>
+            </div>
+
+            <!-- Community Layout (Feed + Sidebar) -->
+            <div class="community-layout">
+                <!-- Post Feed -->
+                <div class="post-feed-list" id="postFeedList">
+                    <!-- Rendered dynamically by app.js -->
+                </div>
+
+                <!-- Community Sidebar -->
+                <aside class="community-sidebar">
+                    <!-- Top Builders Leaderboard -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title"><span>👑</span> อันดับนักสร้างยอดนิยม</h3>
+                        <div class="leaderboard-list">
+                            <div class="leaderboard-item">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="rank-badge rank-1">1</span>
+                                    <img src="https://minotar.net/avatar/Notch/32.png"
+                                        style="width: 28px; height: 28px; border-radius: 4px;" alt="Avatar" />
+                                    <span>MasterBuilder_TH</span>
+                                </div>
+                                <span
+                                    style="font-family: var(--font-pixel); font-size: 0.8rem; color: var(--color-gold);">14.2k
+                                    XP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="rank-badge rank-2">2</span>
+                                    <img src="https://minotar.net/avatar/MumboJumbo/32.png"
+                                        style="width: 28px; height: 28px; border-radius: 4px;" alt="Avatar" />
+                                    <span>Redstone_Engineer</span>
+                                </div>
+                                <span style="font-family: var(--font-pixel); font-size: 0.8rem; color: #94a3b8;">11.8k
+                                    XP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="rank-badge rank-3">3</span>
+                                    <img src="https://minotar.net/avatar/Dream/32.png"
+                                        style="width: 28px; height: 28px; border-radius: 4px;" alt="Avatar" />
+                                    <span>EndCity_Hunter</span>
+                                </div>
+                                <span style="font-family: var(--font-pixel); font-size: 0.8rem; color: #b45309;">9.4k
+                                    XP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Discord Banner -->
+                    <div class="sidebar-card"
+                        style="background: linear-gradient(135deg, rgba(88, 101, 242, 0.2) 0%, rgba(17, 24, 39, 0.8) 100%); border-color: rgba(88, 101, 242, 0.4);">
+                        <h3 class="sidebar-title" style="color: #818cf8;"><span>💬</span> Discord ชุมชนชาวไทย</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+                            เข้าร่วมพูดคุยด้วยเสียง หาตี้ลงดันเจี้ยน และรับการแจ้งเตือนกิจกรรมก่อนใครกว่า 45,000 สมาชิก!
+                        </p>
+                        <a href="https://discord.com" target="_blank" class="btn-secondary-glass"
+                            style="width: 100%; justify-content: center; background: #5865F2; border-color: #5865F2; color: #fff;">
+                            เข้าร่วม Discord
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Resource & Mod Depot Section
+       ========================================================================== -->
+    <section class="content-section" id="resources">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">RESOURCE DEPOT</span>
+                    <h2 class="section-heading">คลังดาวน์โหลด Shaders, Mods & Packs</h2>
+                    <p class="section-subtitle">ทรัพยากรเกมที่คัดสรรและทดสอบแล้วว่าปลอดภัย ใช้งานได้กับเวอร์ชันล่าสุด
+                    </p>
+                </div>
+            </div>
+
+            <!-- Resource Filter Tabs -->
+            <div class="filter-tabs" id="resourceFilters">
+                <button class="filter-btn active" data-filter="all">📦 ทั้งหมด</button>
+                <button class="filter-btn" data-filter="Shaders">✨ Shaders แสงเงา</button>
+                <button class="filter-btn" data-filter="Texture Packs">🎨 Texture Packs</button>
+                <button class="filter-btn" data-filter="Mods">⚡ Mods ปรับแต่งเกม</button>
+                <button class="filter-btn" data-filter="Datapacks">🗺️ Datapacks & Maps</button>
+            </div>
+
+            <!-- Resource Grid -->
+            <div class="resource-grid" id="resourceGrid">
+                <!-- Rendered dynamically by app.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       3D Skin Studio & Interactive Canvas Section
+       ========================================================================== -->
+    <section class="content-section" id="skin-studio" style="background: rgba(4, 6, 9, 0.7);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">3D SKIN STUDIO</span>
+                    <h2 class="section-heading">Minecraft 3D Skin Viewer & Studio</h2>
+                    <p class="section-subtitle">ส่องและตรวจเช็คสกินตัวละครแบบ 3 มิติ หมุนดูได้รอบทิศทาง
+                        พร้อมดึงสกินจากชื่อผู้เล่นทันที</p>
+                </div>
+            </div>
+
+            <div class="skin-studio-box">
+                <div class="skin-studio-grid">
+                    <!-- 3D Skin Canvas Display -->
+                    <div class="skin-canvas-container">
+                        <canvas id="skin-canvas"></canvas>
+                        <div class="skin-controls-bar">
+                            <button class="skin-ctrl-btn" id="btnToggleRotate"
+                                title="หยุด/เริ่มหมุนอัตโนมัติ">⏸️</button>
+                            <button class="skin-ctrl-btn" id="btnResetSkinView" title="รีเซ็ตมุมมอง">🔄</button>
+                        </div>
+                    </div>
+
+                    <!-- Skin Controller & Presets -->
+                    <div class="skin-form-wrap">
+                        <div>
+                            <h3 style="font-size: 1.3rem; margin-bottom: 6px;">ดึงสกินจากชื่อผู้เล่น (Minecraft IGN)
+                            </h3>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                พิมพ์ชื่อในเกมของใครก็ได้ ระบบจะสร้างโมเดล 3D และให้คุณดาวน์โหลดไปใช้งาน
+                            </p>
+                        </div>
+
+                        <div class="skin-input-group">
+                            <input type="text" id="skinUsernameInput" class="skin-username-input"
+                                placeholder="เช่น Steve, Alex, Notch" value="Steve" />
+                            <button class="btn-primary-voxel" id="btnFetchSkin" style="padding: 10px 18px;">
+                                <span>🔍 ดึงสกิน</span>
+                            </button>
+                        </div>
+
+                        <div>
+                            <span class="form-label">สกินตัวละครยอดนิยม:</span>
+                            <div class="skin-preset-chips">
+                                <span class="preset-chip" data-user="Steve">Steve</span>
+                                <span class="preset-chip" data-user="Alex">Alex</span>
+                                <span class="preset-chip" data-user="Notch">Notch</span>
+                                <span class="preset-chip" data-user="Dream">Dream</span>
+                                <span class="preset-chip" data-user="Technoblade">Technoblade</span>
+                                <span class="preset-chip" data-user="MumboJumbo">Mumbo Jumbo</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 12px; margin-top: 10px;">
+                            <button class="btn-secondary-glass" id="btnDownloadSkinFile"
+                                style="flex: 1; justify-content: center;">
+                                <span>📥 ดาวน์โหลดไฟล์สกิน (.png)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Tournaments & Events Section
+       ========================================================================== -->
+    <section class="content-section" id="events">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">TOURNAMENTS & EVENTS</span>
+                    <h2 class="section-heading">ตารางการแข่งขัน & กิจกรรมชุมชน</h2>
+                    <p class="section-subtitle">ร่วมประลองฝีมือในทัวร์นาเมนต์ระดับประเทศ
+                        ชิงเงินรางวัลและของที่ระลึกสุดพิเศษ</p>
+                </div>
+            </div>
+
+            <div class="event-grid">
+                <!-- Event 1 -->
+                <div class="event-card">
+                    <span class="event-status-pill">🟢 เปิดรับสมัคร</span>
+                    <h3 class="event-title">Siam Speedrun Cup 2026: ศึกชิงเจ้าแห่ง The End</h3>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                        การแข่งขันสปีดรันแบบ Random Seed Glitchless ค้นหาทีมที่สามารถโค่น Ender Dragon
+                        ได้เร็วที่สุดในประเทศไทย ถ่ายทอดสดพร้อมนักพากย์ตลอดงาน!
+                    </p>
+
+                    <!-- Live Countdown -->
+                    <div class="countdown-box">
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-days-0">14</div>
+                            <div class="time-lbl">วัน</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-hours-0">15</div>
+                            <div class="time-lbl">ชั่วโมง</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-mins-0">30</div>
+                            <div class="time-lbl">นาที</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-secs-0">00</div>
+                            <div class="time-lbl">วินาที</div>
+                        </div>
+                    </div>
+
+                    <div class="event-prize-tag">
+                        <span>🏆</span> รางวัลรวม: ฿30,000 บาท + ถ้วยรางวัลเกียรติยศ
+                    </div>
+
+                    <button class="btn-primary-voxel" style="width: 100%; justify-content: center;"
+                        onclick="showToast('เปิดให้ลงทะเบียนทีมผ่านระบบเร็วๆ นี้!', '🎮')">
+                        <span>📝 สมัครเข้าร่วมการแข่งขัน</span>
+                    </button>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="event-card" style="border-left-color: #06b6d4;">
+                    <span class="event-status-pill"
+                        style="color: var(--color-diamond); border-color: var(--color-diamond); background: rgba(6,182,212,0.15);">🔵
+                        เตรียมเปิดรับ</span>
+                    <h3 class="event-title">Thailand Voxel Building Contest: วรรณคดีไทย</h3>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                        การประกวดสร้างสรรค์สิ่งปลูกสร้างในโหมด Creative ในหัวข้อ 'วรรณคดีไทยในโลกบล็อก' ชิงเงินรางวัลและ
+                        Cape สุดเอ็กซ์คลูซีฟ
+                    </p>
+
+                    <!-- Live Countdown -->
+                    <div class="countdown-box">
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-days-1">29</div>
+                            <div class="time-lbl">วัน</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-hours-1">08</div>
+                            <div class="time-lbl">ชั่วโมง</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-mins-1">45</div>
+                            <div class="time-lbl">นาที</div>
+                        </div>
+                        <div class="time-segment">
+                            <div class="time-val" id="cd-secs-1">00</div>
+                            <div class="time-lbl">วินาที</div>
+                        </div>
+                    </div>
+
+                    <div class="event-prize-tag">
+                        <span>🏆</span> รางวัลรวม: ฿20,000 บาท + Java Cape
+                    </div>
+
+                    <button class="btn-secondary-glass" style="width: 100%; justify-content: center;"
+                        onclick="showToast('ติดตามรายละเอียดกติกาได้ในบอร์ดชุมชน', '📜')">
+                        <span>📜 ดูกติกาการประกวด</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Guides & Wiki Section
+       ========================================================================== -->
+    <section class="content-section" id="guides" style="background: rgba(4, 6, 9, 0.6);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-tag">KNOWLEDGE BASE</span>
+                    <h2 class="section-heading">คู่มือ & เทคนิคการเล่น (Guides & Wiki)</h2>
+                    <p class="section-subtitle">รวบรวมความรู้ตั้งแต่เริ่มต้นเล่น จนถึงการสร้างฟาร์มอัตโนมัติขั้นสูง</p>
+                </div>
+            </div>
+
+            <div class="guide-grid">
+                <a href="#community" class="guide-card">
+                    <div class="guide-icon">🪵</div>
+                    <h3 class="guide-title">คู่มือผู้เล่นใหม่: รอดคืนแรกแบบโปร</h3>
+                    <p class="guide-summary">วิธีเก็บไม้ คราฟต์เตียง ขุดหาถ่าน
+                        และสร้างที่หลบภัยชั่วคราวเพื่อเอาชีวิตรอดในคืนแรก</p>
+                    <span style="font-size: 0.75rem; color: var(--color-emerald); margin-top: 10px;">อ่าน 5 นาที
+                        →</span>
+                </a>
+
+                <a href="#community" class="guide-card">
+                    <div class="guide-icon">🔴</div>
+                    <h3 class="guide-title">หลักการเรดสโตนเบื้องต้น</h3>
+                    <p class="guide-summary">ทำความเข้าใจการส่งกระแสสัญญาณเรดสโตน Repeater, Comparator และวงจรตรรกะ</p>
+                    <span style="font-size: 0.75rem; color: var(--color-emerald); margin-top: 10px;">อ่าน 8 นาที
+                        →</span>
+                </a>
+
+                <a href="#community" class="guide-card">
+                    <div class="guide-icon">🖥️</div>
+                    <h3 class="guide-title">วิธีเปิดเซิร์ฟเวอร์เล่นกับเพื่อน</h3>
+                    <p class="guide-summary">ขั้นตอนการตั้งค่า Server Properties, การฟอร์เวิร์ดพอร์ต
+                        และการติดตั้งปลั๊กอิน</p>
+                    <span style="font-size: 0.75rem; color: var(--color-emerald); margin-top: 10px;">อ่าน 10 นาที
+                        →</span>
+                </a>
+
+                <a href="#community" class="guide-card">
+                    <div class="guide-icon">🗝️</div>
+                    <h3 class="guide-title">พิกัดห้องสมบัติ Trial Chambers 1.21</h3>
+                    <p class="guide-summary">วิธีเทรดแผนที่จากชาวบ้าน การเคลียร์ Spawner และการไขกุญแจ Ominous Vault</p>
+                    <span style="font-size: 0.75rem; color: var(--color-emerald); margin-top: 10px;">อ่าน 6 นาที
+                        →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       New Post Modal
+       ========================================================================== -->
+    <div class="modal-overlay" id="newPostModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">✍️ สร้างกระทู้ใหม่ในชุมชน</h3>
+                <button class="modal-close-btn" id="btnCloseNewPost">✕</button>
+            </div>
+            <form id="newPostForm">
+                <div class="form-group">
+                    <label class="form-label">หัวข้อกระทู้</label>
+                    <input type="text" id="postTitleInput" class="form-input" placeholder="ใส่หัวข้อที่ต้องการพูดคุย..."
+                        required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">หมวดหมู่</label>
+                    <select id="postCategoryInput" class="form-select">
+                        <option value="Showcase">🏰 ผลงานสร้างสรรค์ (Showcase)</option>
+                        <option value="Redstone">🔴 เทคนิคเรดสโตน (Redstone)</option>
+                        <option value="LFG">👥 หาเพื่อน / ร่วมทีม (LFG)</option>
+                        <option value="News">📢 ข่าวสาร & อัปเดต (News)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ชื่อผู้โพสต์ (IGN)</label>
+                    <input type="text" id="postAuthorInput" class="form-input"
+                        placeholder="ชื่อในเกมของคุณ (เช่น Steve_TH)" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">เนื้อหากระทู้</label>
+                    <textarea id="postContentInput" class="form-textarea" rows="4"
+                        placeholder="เขียนรายละเอียดกระทู้ ลิงก์ดาวน์โหลด หรือพิกัด..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ลิงก์รูปภาพประกอบ (ถ้ามี)</label>
+                    <input type="url" id="postImageInput" class="form-input" placeholder="https://..." />
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn-secondary-glass"
+                        onclick="document.getElementById('newPostModal').classList.remove('active')">ยกเลิก</button>
+                    <button type="submit" class="btn-primary-voxel">โพสต์กระทู้</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       Universal Search Modal (`Ctrl + K`)
+       ========================================================================== -->
+    <div class="modal-overlay" id="searchModal">
+        <div class="modal-card" style="max-width: 640px;">
+            <div class="modal-header" style="margin-bottom: 12px;">
+                <h3 class="modal-title" style="font-size: 1.1rem;">🔍 ค้นหาด่วนทั่วทั้งเว็บไซต์</h3>
+                <button class="modal-close-btn" id="closeSearchBtn">✕</button>
+            </div>
+            <input type="text" id="globalSearchInput" class="form-input"
+                placeholder="พิมพ์ชื่อเซิร์ฟเวอร์, มอด, หรือกระทู้ที่ต้องการ..."
+                style="font-size: 1.05rem; padding: 14px;" />
+            <div id="searchResultsList" style="margin-top: 16px; max-height: 340px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       Site Footer
+       ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="brand-logo" style="margin-bottom: 14px;">
+                        <div class="logo-voxel-icon" style="width: 32px; height: 32px;">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#ffffff"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            </svg>
+                        </div>
+                        <span class="brand-title" style="font-size: 1.15rem;">SIAMCRAFT</span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        SiamCraft Hub — ชุมชนเกม Minecraft ภาษาไทยที่ดีที่สุดเพื่อคราฟเตอร์ชาวไทยทุกคน
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">หมวดหมู่หลัก</h4>
+                    <ul class="footer-links">
+                        <li><a href="#servers" class="footer-link">รายการเซิร์ฟเวอร์</a></li>
+                        <li><a href="#community" class="footer-link">กระดานเว็บบอร์ด</a></li>
+                        <li><a href="#resources" class="footer-link">คลังมอด & เชดเดอร์</a></li>
+                        <li><a href="#skin-studio" class="footer-link">3D Skin Viewer</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">คอมมูนิตี้ & สื่อ</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://discord.com" target="_blank" class="footer-link">Discord Server</a></li>
+                        <li><a href="https://facebook.com" target="_blank" class="footer-link">Facebook Group</a></li>
+                        <li><a href="https://youtube.com" target="_blank" class="footer-link">YouTube Partner</a></li>
+                        <li><a href="#events" class="footer-link">ทัวร์นาเมนต์ E-Sports</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">นโยบาย & กฎระเบียบ</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px;">
+                        เว็บไซต์นี้เป็นศูนย์รวมคอมมูนิตี้อิสระ ไม่ได้เป็นทางการและไม่มีส่วนเกี่ยวข้องกับ Mojang Studios
+                        หรือ Microsoft Corporation แต่อย่างใด
+                    </p>
+                    <span style="font-family: var(--font-pixel); font-size: 0.7rem; color: var(--color-emerald);">MOJANG
+                        EULA COMPLIANT</span>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>© 2026 SiamCraft Hub (Thailand). All rights reserved. Minecraft is a trademark of Mojang Synergies
+                    AB.</span>
+                <span>Crafted with 💚 for Thai Minecrafters</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
